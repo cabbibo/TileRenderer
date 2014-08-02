@@ -53,7 +53,6 @@
 
       controls = new THREE.OrbitControls( camera , renderer.domElement );
 
-
       var cube = new THREE.Mesh(
         new THREE.BoxGeometry( 100 , 100 , 100 ),
         new THREE.MeshNormalMaterial 
@@ -61,11 +60,8 @@
 
       scene.add( cube );
 
-      // Making sure our renderer is always the right size
-      //window.addEventListener( 'resize', onWindowResize , false );
 
       var w = 440 , h = 560;
-
       resize( w , h );
 
     }
@@ -77,15 +73,12 @@
 
     }
 
-    // 440 560
-    // Resets the renderer to be the proper size
     function resize( w , h ){
 
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
 
       renderer.setSize( w , h );
-
 
     }
 

@@ -4,6 +4,7 @@ var tileRenderer;
 
 /*** ADDING SCREEN SHOT ABILITY ***/
 window.addEventListener("keyup", function(e){
+    
     var imgData, imgNode;
     //Listen to 'P' key
     if(e.which !== 80) return;  
