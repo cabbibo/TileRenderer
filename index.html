@@ -4,22 +4,17 @@
   <head>
     <style>
 
-    html{
+      html{
 
-      background:#fff;
+        background:#fff;
 
-    }
+      }
   
     </style>
   </head>
 
   <body>
 
-  <div id="Info">
-    <!-- Total Verts: <div id="totalVerts"></div>-->
-  </div>
-
-  <div id="GUI"></div>
   <script src="three.js"></script>
   <script src="OrbitControls.js"></script>
   <script src="TileRenderer.js"></script>
@@ -52,11 +47,8 @@
       
       document.body.appendChild( container );
 
-
       // Setting up our Renderer
       renderer = new THREE.WebGLRenderer();
-
-      renderer.setSize( window.innerWidth, window.innerHeight );
       container.appendChild( renderer.domElement );
 
       controls = new THREE.OrbitControls( camera , renderer.domElement );
@@ -71,7 +63,9 @@
 
       // Making sure our renderer is always the right size
       //window.addEventListener( 'resize', onWindowResize , false );
-      
+
+      var w = 440 , h = 560;
+
       resize( w , h );
 
     }
