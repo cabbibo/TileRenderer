@@ -6,6 +6,7 @@ var tileRenderer;
 window.addEventListener("keyup", function(e){
     
     var imgData, imgNode;
+    
     //Listen to 'P' key
     if(e.which !== 80) return;  
       
@@ -27,10 +28,6 @@ window.addEventListener("keyup", function(e){
 
 function TileRenderer( renderer, scene , camera, numCols, numRows ){
 
-  console.log( 'renderer' );
-  console.log( renderer );
-  // Gets the DPI to render properly
-  
   this.renderer         = renderer;
   this.scene            = scene;
   this.camera           = camera;
