@@ -1,0 +1,101 @@
+<html>
+
+  <title>TREE</title>
+  <head>
+    <style>
+
+    html{
+
+      background:#fff;
+
+    }
+  
+    </style>
+  </head>
+
+  <body>
+
+  <div id="Info">
+    <!-- Total Verts: <div id="totalVerts"></div>-->
+  </div>
+
+  <div id="GUI"></div>
+  <script src="three.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="TileRenderer.js"></script>
+
+  <script>
+
+    var camera, scene , renderer, controls , stats , clock;
+
+    init();
+    animate();
+    
+    function init(){
+
+      clock = new THREE.Clock();
+      scene = new THREE.Scene();
+      
+      camera = new THREE.PerspectiveCamera( 
+        50 ,
+        window.innerWidth / window.innerHeight,
+        2000 / 100 ,
+        2000 * 100
+      );
+
+      // placing our camera position so it can see everything
+      camera.position.z = 2000 ;
+
+          // Getting the container in the right location
+      container     = document.createElement( 'div' );
+      container.id  = 'container';
+      
+      document.body.appendChild( container );
+
+
+      // Setting up our Renderer
+      renderer = new THREE.WebGLRenderer();
+
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      container.appendChild( renderer.domElement );
+
+      controls = new THREE.OrbitControls( camera , renderer.domElement );
+
+
+      var cube = new THREE.Mesh(
+        new THREE.CubeGeometry( 100 , 100 , 100 ),
+        new THREE.MeshNormalMaterial 
+      );
+
+      scene.add( cube );
+
+      // Making sure our renderer is always the right size
+      //window.addEventListener( 'resize', onWindowResize , false );
+      
+      resize( w , h );
+
+    }
+
+    function animate(){
+
+      renderer.render( scene , camera );
+      requestAnimationFrame( animate );
+
+    }
+
+    // 440 560
+    // Resets the renderer to be the proper size
+    function resize( w , h ){
+
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize( w , h );
+
+
+    }
+
+  </script>
+</body>
+</html>
+
