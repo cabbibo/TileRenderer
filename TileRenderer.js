@@ -101,6 +101,8 @@ TileRenderer.prototype = {
     //console logs the regular image for comparison
     imgData = this.renderer.domElement.toDataURL();  
 
+    var imageData = [];
+
     for( var i = 0; i < this.cameras.length; i++ ){
 
       this.cameras[i].position = this.camera.position.clone();
@@ -110,7 +112,13 @@ TileRenderer.prototype = {
 
       this.renderer.render( this.scene , this.cameras[i] );
       imgData = renderer.domElement.toDataURL();      
-      console.log(imgData);
+
+      imageData.push( imgData );
+
+      var a = $("<a>").attr("href", imgData ).attr("download", x+"_"+y+".png").appendTo("body");
+
+      a[0].click();
+      a.remove();
 
       imgNode = document.createElement("img");
       imgNode.src = imgData;
@@ -121,11 +129,14 @@ TileRenderer.prototype = {
         this.renderer.domElement.height * y     
       );
 
+      
+
     }
 
     var fullImg = this.stitchedCanvas.toDataURL();
 
-    console.log( fullImg );
+
+    return imageData;
 
   },
 
