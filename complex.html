@@ -1,0 +1,111 @@
+<html>
+
+  <title>TREE</title>
+  <head>
+    <style>
+
+      html{
+
+        background:#fff;
+
+      }
+  
+    </style>
+  </head>
+
+  <body>
+
+  <script src="three.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script src="TileRenderer.js"></script>
+  <script src="FileSaver.js"></script>
+
+  <script>
+
+    var camera, scene , renderer, controls , stats , clock;
+
+    init();
+    animate();
+    
+    function init(){
+
+      clock = new THREE.Clock();
+      scene = new THREE.Scene();
+      
+      camera = new THREE.PerspectiveCamera( 
+        50 ,
+        1/1,
+        2000 / 100 ,
+        2000 * 100
+      );
+
+      // placing our camera position so it can see everything
+      camera.position.z = 2000 ;
+
+      // Getting the container in the right location
+      container     = document.createElement( 'div' );
+      
+      document.body.appendChild( container );
+
+      // Setting up our Renderer
+      renderer = new THREE.WebGLRenderer();
+      container.appendChild( renderer.domElement );
+
+      controls = new THREE.OrbitControls( camera , renderer.domElement );
+
+      var cube = new THREE.Mesh(
+        new THREE.BoxGeometry( 10 , 10 , 10 ),
+        new THREE.MeshNormalMaterial 
+      );
+
+      for( var i = 0; i < 10000; i++ ){
+
+        var c = cube.clone();
+        c.rotation.x = Math.random()*100;
+        c.rotation.y = Math.random()*100;
+        c.rotation.z = Math.random()*100;
+        c.position.x = (Math.random() - .5 ) * 1000;
+        c.position.y = (Math.random() - .5 ) * 1000;
+        c.position.z = (Math.random() - .5 ) * 1000;
+        scene.add( c );
+
+      }
+
+
+      var w = window.innerWidth , h = window.innerHeight;
+      resize( w , h );
+
+
+       /*** ADDING SCREEN SHOT ABILITY ***/
+      window.addEventListener("keyup", function(e){
+      
+        if(e.which !== 80) return;  
+         
+        THREE.renderTiledScene( renderer , scene , camera , 10 , 10 , 'HELLO' );
+
+      });
+
+
+
+    }
+
+    function animate(){
+
+      renderer.render( scene , camera );
+      requestAnimationFrame( animate );
+
+    }
+
+    function resize( w , h ){
+
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize( w , h );
+
+    }
+
+  </script>
+</body>
+</html>
+

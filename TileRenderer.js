@@ -7,6 +7,20 @@ THREE.renderTiledScene = function( renderer, scene , camera, numCols, numRows , 
   var totalWidth        = renderer.domElement.width  * numCols;
   var totalHeight       = renderer.domElement.height * numRows;
 
+  // Creating a canvas to stitch all the images in.
+  // This is the canvas which will be our final output image
+  var stitchedCanvas         = document.createElement( 'canvas' );
+
+  // Setting up the stitchedCanvas so it will be the size of
+  // our total image
+  stitchedCanvas.width   = totalWidth  ;
+  stitchedCanvas.height  = totalHeight ;
+
+  // scc = stitchedCanvasContext
+  // used for drawing our new data
+  var scc = stitchedCanvas.getContext( '2d' );
+
+
   // Sets up an array that will hold all the different cameras
   // That while write every 'tile'
   var cameras = [];
@@ -54,24 +68,71 @@ THREE.renderTiledScene = function( renderer, scene , camera, numCols, numRows , 
   
   var imageData = [];
 
+  var drawn = 0;
+
   for( var i = 0; i < cameras.length; i++ ){
 
     var x = Math.floor( i / numCols );
     var y = i % numRows;
 
     renderer.render( scene , cameras[i] );
-    imgData = renderer.domElement.toDataURL();      
 
-    imageData.push( imgData );
+    var info = {
 
-    var a = document.createElement('a');
+      scc: scc,
+      x: x,
+      y: y,
+      renderer: renderer
 
-    a.href = imgData;
-    a.download = title + "_"+x+"_"+y+".png";
-    a.click();
+    }
 
+    
+    //var fTitle = title + "_"+x+"_"+y+".png";
+    //renderer.domElement.mozGetAsFile(title + "_"+x+"_"+y+".png");
+    renderer.domElement.toBlob( function( blob ){
+
+    //saveAs(blob, this)
+    //
+  
+      var url = URL.createObjectURL( blob );
+
+      var image = document.createElement('img');
+      image.src = url;
+
+      document.body.appendChild( image );
+
+      image.onload = function(){
+        
+        this.scc.drawImage( 
+          image,
+          this.renderer.domElement.width * this.x , 
+          this.renderer.domElement.height * this.y     
+        );
+
+
+        drawn ++;
+
+        if( drawn === cameras.length ){
+
+          document.body.appendChild( stitchedCanvas );
+          stitchedCanvas.toBlob( function( blob ){
+            saveAs( blob , title + ".png" );
+          });
+
+
+        }
+
+      }.bind( this );
+
+
+    }.bind( info ));
+    
+   // imgData = renderer.domElement.toDataURL();      
+
+    //imageData.push( imgData );
+
+  
   }
-
   return imageData;
 
 }
